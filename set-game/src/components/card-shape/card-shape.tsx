@@ -1,6 +1,100 @@
-import { Component, Prop, h } from "@stencil/core";
+import { Component, Prop, h, FunctionalComponent } from "@stencil/core";
 import { Symbols, Shadings, Colors } from "../interfaces";
 import { HTMLStencilElement } from "@stencil/core/internal";
+
+interface ShapeProps {
+  color: Colors;
+  shading: Shadings;
+}
+
+const stripeDefs: HTMLStencilElement = (
+  <defs>
+    <pattern
+      id="pattern-stripe"
+      width="4"
+      height="4"
+      patternUnits="userSpaceOnUse"
+    >
+      <rect width="2" height="4" fill="white"></rect>
+    </pattern>
+    <mask id="mask-stripe" maskUnits="userSpaceOnUse">
+      <rect
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        fill="url(#pattern-stripe)"
+      />
+    </mask>
+  </defs>
+);
+
+const Oval: FunctionalComponent<ShapeProps> = ({ color, shading }) => (
+  <svg width="86" height="46">
+    {stripeDefs}
+    {shading === Shadings.STRIPED ? (
+      <rect
+        x="3"
+        y="3"
+        width="80"
+        height="40"
+        rx="20"
+        ry="20"
+        fill={color}
+        mask="url(#mask-stripe)"
+      />
+    ) : null}
+    <rect
+      x="3"
+      y="3"
+      width="80"
+      height="40"
+      rx="20"
+      ry="20"
+      fill={shading === Shadings.SOLID ? color : "transparent"}
+      stroke={color}
+      stroke-width="3"
+    />
+  </svg>
+);
+
+const Diamond: FunctionalComponent<ShapeProps> = ({ color, shading }) => (
+  <svg width="86" height="46">
+    {stripeDefs}
+    {shading === Shadings.STRIPED ? (
+      <polygon
+        points="3 23,43 43,83 23,43 3"
+        fill={color}
+        mask="url(#mask-stripe)"
+      />
+    ) : null}
+    <polygon
+      points="3 23,43 43,83 23,43 3"
+      fill={shading === Shadings.SOLID ? color : "transparent"}
+      stroke={color}
+      stroke-width="3"
+    />
+  </svg>
+);
+
+const Squiggle: FunctionalComponent<ShapeProps> = ({ color, shading }) => (
+  <svg width="86" height="46">
+    {stripeDefs}
+    {shading === Shadings.STRIPED ? (
+      <path
+        d="M 3 23 Q 20 5, 30 12 T 60 12 C 70 12, 83 23, 64 36 Q 55 42, 40 36 T 12 40 C 12 40, 0 40, 3 23"
+        fill={color}
+        mask="url(#mask-stripe)"
+      />
+    ) : null}
+    <path
+      d="M 3 23 Q 20 5, 30 12 T 60 12 C 70 12, 83 23, 64 36 Q 55 42, 40 36 T 12 40 C 12 40, 0 40, 3 23"
+      fill={shading === Shadings.SOLID ? color : "transparent"}
+      stroke={color}
+      stroke-width="3"
+    />
+  </svg>
+);
 
 @Component({
   tag: "card-shape",
@@ -11,55 +105,13 @@ export class CardShape {
   @Prop() color: Colors;
 
   render(): HTMLStencilElement {
-    const shadingBackgroundMap: Record<Shadings, string> = {
-      [Shadings.OPEN]: "transparent",
-      [Shadings.SOLID]: this.color,
-      [Shadings.STRIPED]: `repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 4px,
-        ${this.color} 4px,
-        ${this.color} 7px
-      )`,
-    };
-
     switch (this.symbol) {
       case Symbols.OVAL:
-        return (
-          <div
-            style={{
-              height: "2.8rem",
-              borderRadius: "25px",
-              border: `3px solid ${this.color}`,
-              background: shadingBackgroundMap[this.shading],
-            }}
-          />
-        );
+        return <Oval color={this.color} shading={this.shading} />;
       case Symbols.DIAMOND:
-        return (
-          <div
-            style={{
-              width: "0",
-              height: "0",
-              border: "3rem solid transparent",
-              borderBottom: `1.4rem solid ${this.color}`,
-              position: "relative",
-              top: "-3rem",
-            }}
-          >
-            <span
-              style={{
-                width: "0",
-                height: "0",
-                border: "3rem solid transparent",
-                borderTop: `1.4rem solid ${this.color}`,
-                position: "absolute",
-                top: "1.4rem",
-                left: "-3rem",
-              }}
-            />
-          </div>
-        );
+        return <Diamond color={this.color} shading={this.shading} />;
+      case Symbols.SQUIGGLE:
+        return <Squiggle color={this.color} shading={this.shading} />;
       default:
         return null;
     }
