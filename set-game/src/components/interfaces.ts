@@ -15,3 +15,9 @@ export enum Shadings {
   STRIPED = "striped",
   OPEN = "open",
 }
+
+export interface ShapeProps {
+  symbol?: Symbols;
+  shading: Shadings;
+  color: Colors;
+}
