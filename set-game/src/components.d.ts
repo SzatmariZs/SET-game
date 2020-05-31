@@ -20,6 +20,8 @@ export namespace Components {
         "shading": Shadings;
         "symbol": Symbols;
     }
+    interface SetGameApp {
+    }
 }
 declare global {
     interface HTMLCardShapeElement extends Components.CardShape, HTMLStencilElement {
@@ -40,10 +42,17 @@ declare global {
         prototype: HTMLGameCardElement;
         new (): HTMLGameCardElement;
     };
+    interface HTMLSetGameAppElement extends Components.SetGameApp, HTMLStencilElement {
+    }
+    var HTMLSetGameAppElement: {
+        prototype: HTMLSetGameAppElement;
+        new (): HTMLSetGameAppElement;
+    };
     interface HTMLElementTagNameMap {
         "card-shape": HTMLCardShapeElement;
         "game-board": HTMLGameBoardElement;
         "game-card": HTMLGameCardElement;
+        "set-game-app": HTMLSetGameAppElement;
     }
 }
 declare namespace LocalJSX {
@@ -60,10 +69,13 @@ declare namespace LocalJSX {
         "shading"?: Shadings;
         "symbol"?: Symbols;
     }
+    interface SetGameApp {
+    }
     interface IntrinsicElements {
         "card-shape": CardShape;
         "game-board": GameBoard;
         "game-card": GameCard;
+        "set-game-app": SetGameApp;
     }
 }
 export { LocalJSX as JSX };
@@ -73,6 +85,7 @@ declare module "@stencil/core" {
             "card-shape": LocalJSX.CardShape & JSXBase.HTMLAttributes<HTMLCardShapeElement>;
             "game-board": LocalJSX.GameBoard & JSXBase.HTMLAttributes<HTMLGameBoardElement>;
             "game-card": LocalJSX.GameCard & JSXBase.HTMLAttributes<HTMLGameCardElement>;
+            "set-game-app": LocalJSX.SetGameApp & JSXBase.HTMLAttributes<HTMLSetGameAppElement>;
         }
     }
 }

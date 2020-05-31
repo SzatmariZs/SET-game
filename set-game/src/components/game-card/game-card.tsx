@@ -1,5 +1,5 @@
 import { Component, Prop, h } from "@stencil/core";
-import { Symbols, Shadings, Colors, ShapeProps } from "../interfaces";
+import { Symbols, Shadings, Colors, CardProps } from "../interfaces";
 
 @Component({
   tag: "game-card",
@@ -12,7 +12,7 @@ export class GameCard {
   @Prop() color: Colors;
 
   render() {
-    const shapeArray: ShapeProps[] = Array(this.number).fill({
+    const shapeArray: CardProps[] = Array(this.number).fill({
       color: this.color,
       symbol: this.symbol,
       shading: this.shading,

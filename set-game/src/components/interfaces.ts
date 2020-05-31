@@ -17,7 +17,11 @@ export enum Shadings {
 }
 
 export interface ShapeProps {
-  symbol?: Symbols;
   shading: Shadings;
   color: Colors;
+}
+
+export interface CardProps extends ShapeProps {
+  symbol?: Symbols;
+  number?: number;
 }

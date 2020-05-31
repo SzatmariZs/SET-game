@@ -1,0 +1,43 @@
+:root {
+  --game-background-color: saddlebrown;
+  --game-foreground-color: white;
+}
+
+.game-container {
+  background-color: var(--game-background-color);
+  display: flex;
+  justify-content: space-between;
+}
+
+.rules {
+  background-color: var(--game-foreground-color);
+  padding: 12px 20px;
+  margin: 12px 20px;
+  font-family: 'Merriweather', serif;
+  max-width: 600px;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.purple {
+  color: purple;
+}
+
+.red,
+.green,
+.purple {
+  font-weight: bold;
+}
+
+.source-info {
+  font-size: .8em;
+  color: grey;
+  margin-top: 24px;
+  text-align: right;
+}
