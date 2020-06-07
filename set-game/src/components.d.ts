@@ -16,6 +16,7 @@ export namespace Components {
     }
     interface GameCard {
         "color": Colors;
+        "isSelected": boolean;
         "number": number;
         "shading": Shadings;
         "symbol": Symbols;
@@ -65,6 +66,7 @@ declare namespace LocalJSX {
     }
     interface GameCard {
         "color"?: Colors;
+        "isSelected"?: boolean;
         "number"?: number;
         "shading"?: Shadings;
         "symbol"?: Symbols;

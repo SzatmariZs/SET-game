@@ -1,13 +1,27 @@
 .board {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  column-gap: 12px;
-  row-gap: 12px;
+  grid-template-columns: repeat(4, 7rem);
+  column-gap: 2rem;
+  row-gap: 2rem;
   width: 32rem;
   padding: 2rem;
+  float: left;
+  margin-right: 2rem;
+}
+
+.game-info {
+  color: white;
+  font-family: "Merriweather", serif;
+  display: block;
+  float: right;
+  margin-top: 32px;
 }
 
 .card {
   margin-bottom: 16px;
   padding: 8px;
+}
+
+.hidden {
+  display: none;
 }

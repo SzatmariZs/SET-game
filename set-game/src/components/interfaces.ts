@@ -24,4 +24,7 @@ export interface ShapeProps {
 export interface CardProps extends ShapeProps {
   symbol?: Symbols;
   number?: number;
+  isSelected?: boolean;
 }
+
+export type CardTrio = [CardProps, CardProps, CardProps];

@@ -10,6 +10,7 @@ export class GameCard {
   @Prop() symbol: Symbols;
   @Prop() shading: Shadings;
   @Prop() color: Colors;
+  @Prop() isSelected = false;
 
   render() {
     const shapeArray: CardProps[] = Array(this.number).fill({
@@ -18,7 +19,7 @@ export class GameCard {
       shading: this.shading,
     });
     return (
-      <div class="card">
+      <div class={`card ${this.isSelected ? "selected" : ""}`}>
         {shapeArray.map((shape) => (
           <card-shape
             class="shape"

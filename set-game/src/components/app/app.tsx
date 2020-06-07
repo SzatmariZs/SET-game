@@ -95,7 +95,10 @@ export class SetGameApp {
           </p>
           <p class="source-info">
             Source:{" "}
-            <a href="https://en.wikipedia.org/wiki/Set_(card_game)">
+            <a
+              target="_blank"
+              href="https://en.wikipedia.org/wiki/Set_(card_game)"
+            >
               Wikipedia
             </a>
           </p>
