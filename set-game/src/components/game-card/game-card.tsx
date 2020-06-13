@@ -19,7 +19,10 @@ export class GameCard {
       shading: this.shading,
     });
     return (
-      <div class={`card ${this.isSelected ? "selected" : ""}`}>
+      <div
+        class={`card ${this.isSelected ? "selected" : ""}`}
+        title={`${this.number}, ${this.color}, ${this.shading}, ${this.symbol}`}
+      >
         {shapeArray.map((shape) => (
           <card-shape
             class="shape"

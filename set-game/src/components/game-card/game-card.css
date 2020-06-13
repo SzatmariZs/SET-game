@@ -9,6 +9,7 @@
   flex-flow: column wrap;
   align-items: center;
   padding: 4px;
+  transition: all 0.25s;
 }
 
 .selected {

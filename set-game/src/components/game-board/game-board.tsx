@@ -1,5 +1,12 @@
 import { Component, h, State } from "@stencil/core";
-import { Symbols, Shadings, Colors, CardProps, CardTrio } from "../interfaces";
+import {
+  Symbols,
+  Shadings,
+  Colors,
+  CardProps,
+  CardTrio,
+  GameStates,
+} from "../interfaces";
 import { HTMLStencilElement } from "@stencil/core/internal";
 
 @Component({
@@ -13,6 +20,7 @@ export class GameBoard {
   @State() setsOnBoard: CardTrio[] = [];
   @State() selectedCards: CardProps[] = [];
   @State() showHint = false;
+  @State() gameState: GameStates = GameStates.NEUTRAL;
 
   areCardsSet(cards: CardTrio): boolean {
     const numbers = new Set();
@@ -62,11 +70,12 @@ export class GameBoard {
     }
 
     if (!this.setsOnBoard.length) {
-      this.putCardFromDeckToBoard(Math.max(3, this.cardsInDeck.length));
+      this.putCardFromDeckToBoard(Math.min(3, this.cardsInDeck.length));
+      this.countSetsOnBoard();
     }
   }
 
-  componentWillLoad() {
+  createDeck(): void {
     [1, 2, 3].forEach((number) =>
       [Colors.GREEN, Colors.PURPLE, Colors.RED].forEach((color) =>
         [Shadings.OPEN, Shadings.SOLID, Shadings.STRIPED].forEach((shading) =>
@@ -78,7 +87,10 @@ export class GameBoard {
         )
       )
     );
+  }
 
+  componentWillLoad() {
+    this.createDeck();
     this.putCardFromDeckToBoard(12);
     this.countSetsOnBoard();
   }
@@ -94,17 +106,38 @@ export class GameBoard {
 
     if (this.selectedCards.length === 3) {
       if (this.areCardsSet(this.selectedCards as CardTrio)) {
-        this.cardsOnBoard = this.cardsOnBoard.map((cardOnBoard) =>
-          this.selectedCards.includes(cardOnBoard)
-            ? this.getCardFromDeck()
-            : cardOnBoard
-        );
-        this.setsOnBoard = [];
-        this.countSetsOnBoard();
-        // TODO: Add animation
+        this.gameState = GameStates.IS_SET;
+      } else {
+        this.gameState = GameStates.NOT_SET;
       }
 
-      this.selectedCards = [];
+      setTimeout(() => {
+        if (this.gameState === GameStates.IS_SET) {
+          const numberOfCardsOnBoard = this.cardsOnBoard.length;
+          console.log(numberOfCardsOnBoard);
+          this.cardsOnBoard =
+            numberOfCardsOnBoard !== 12
+              ? [...this.cardsOnBoard]
+              : this.cardsOnBoard.map((cardOnBoard) =>
+                  this.selectedCards.includes(cardOnBoard)
+                    ? this.getCardFromDeck()
+                    : cardOnBoard
+                );
+          this.setsOnBoard = [];
+          this.countSetsOnBoard();
+
+          if (this.showHint) {
+            this.toggleHint();
+          }
+        }
+
+        this.selectedCards = [];
+        this.gameState = GameStates.NEUTRAL;
+
+        if (!this.cardsInDeck.length || !this.setsOnBoard.length) {
+          this.gameState = GameStates.WON;
+        }
+      }, 800);
     }
   }
 
@@ -112,10 +145,25 @@ export class GameBoard {
     this.showHint = !this.showHint;
   };
 
+  resetGame = () => {
+    this.cardsInDeck = [];
+    this.cardsOnBoard = [];
+    this.setsOnBoard = [];
+    this.gameState = GameStates.NEUTRAL;
+
+    this.createDeck();
+    this.putCardFromDeckToBoard(12);
+    this.countSetsOnBoard();
+  };
+
   render(): HTMLStencilElement {
     return (
       <div class="board-container">
-        <div class="board">
+        <div class="winning-message">
+          <p>All possible sets cleared, YOU ARE AMAZING!</p>
+          <button onClick={this.resetGame}>Play again</button>
+        </div>
+        <div class={`board ${this.gameState}`}>
           {this.cardsOnBoard.map((card) => (
             <game-card
               number={card.number}
@@ -132,7 +180,7 @@ export class GameBoard {
           <p>Cards left in deck: {this.cardsInDeck.length}</p>
           <button onClick={this.toggleHint}>
             {this.showHint ? "Hide hint" : "Show hint"}
-          </button>
+          </button>{" "}
           <p class={this.showHint ? "" : "hidden"}>
             {this.setsOnBoard?.map((set) => (
               <div>
